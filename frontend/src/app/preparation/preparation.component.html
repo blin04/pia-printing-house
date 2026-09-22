@@ -1,0 +1,62 @@
+<button (click)="back()">Nazad</button>
+
+<h2>Priprema: {{ product.naziv }}</h2>
+
+<!-- preview -->
+<div style="position: relative; display: inline-block; border: 1px solid #ccc">
+  <img [src]="uploadsUri + '/' + product.slikaUrl" [alt]="product.naziv" width="300" />
+  @if (slikaPreview) {
+    <img [src]="slikaPreview"
+         style="position: absolute; top: 0; left: 0; max-width: 100%; max-height: 100%; opacity: 0.85" />
+  }
+  @if (tekst) {
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                color: white; font-weight: bold; text-shadow: 0 0 4px black; text-align: center">
+      {{ tekst }}
+    </div>
+  }
+</div>
+
+<br /><br />
+
+<div>
+  Boja:
+  <select [(ngModel)]="boja">
+    @if (product.dostupneBoje && product.dostupneBoje.length) {
+      @for (b of product.dostupneBoje; track b) {
+        <option [value]="b">{{ b }}</option>
+      }
+    } @else {
+      <option value="Bela">Bela</option>
+    }
+  </select>
+  <br />
+
+  Vrsta štampe:
+  <select [(ngModel)]="idUsluge">
+    <option value="">Bez dodatne štampe</option>
+    @for (u of product.uslugeStampe; track u.idUsluge) {
+      <option [value]="u.idUsluge">
+        {{ u.tipStampe }} (+{{ u.dodatnaCenaPoKomadu }} RSD, max {{ u.maxSirinaMm }}x{{ u.maxVisinaMm }}mm)
+      </option>
+    }
+  </select>
+  <br />
+
+  Tekst: <input [(ngModel)]="tekst" />
+  <br />
+
+  Sličica: <input type="file" accept="image/jpeg,image/png,image/gif" (change)="onImage($event)" />
+  <br />
+
+  Količina: <input type="number" min="1" [(ngModel)]="kolicina" />
+  <span>(na stanju: {{ product.kolicinaNaLageru }})</span>
+  <br />
+</div>
+
+<br />
+<button (click)="addToCart()">Dodaj u korpu</button>
+<button (click)="reset()">Poništi</button>
+
+@if (error) { <p style="color: red">{{ error }}</p> }
+@if (message) { <p style="color: green">{{ message }}</p> }

@@ -9,7 +9,7 @@
 <nav>
   <button (click)="setView('profile')">Profil</button> <br />
   <button (click)="setView('search')">Pretraga proizvoda</button> <br />
-  <button disabled>E-korpa</button> <br />
+  <button (click)="setView('cart')">E-korpa</button> <br />
   <button disabled>Arhiva</button> <br />
   @if (user.lice === 'pravno') {
     <button disabled>Javne nabavke</button> <br />
@@ -27,6 +27,9 @@
   }
   @case ('search') {
     <app-search />
+  }
+  @case ('cart') {
+    <app-cart />
   }
 }
 

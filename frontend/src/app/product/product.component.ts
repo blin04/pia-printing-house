@@ -64,6 +64,6 @@ export class ProductComponent implements OnInit {
   }
 
   dalje(): void {
-    // TODO: navigate to the product preparation page (not built yet).
+    this.router.navigate(['prepare', this.product._id]);
   }
 }

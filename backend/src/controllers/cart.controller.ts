@@ -5,7 +5,10 @@ import { randomUUID } from 'crypto'
 import { imageSize } from 'image-size'
 import UserModel from '../models/user'
 import ProductModel from '../models/product'
+import OrderModel from '../models/order'
 import { UPLOADS_DIR } from '../config/upload'
+import { generateInvoicePdf } from '../utils/pdf'
+import { sendInvoiceEmail } from '../utils/mail'
 
 export class CartController {
   // GET /cart/:id
@@ -90,8 +93,80 @@ export class CartController {
   }
 
   // POST /cart/checkout
+  // Forms one invoice (order) per printer with status "naruceno" (payment is
+  // skipped for now), empties the cart, then emails each invoice as a PDF.
   checkout = async (req: express.Request, res: express.Response) => {
-    // TODO: implement — form one invoice (order) per printer, then clear the korpa.
-    res.status(501).json({ message: 'Not implemented' })
+    try {
+      const { id } = req.body
+      const user = await UserModel.findOne({ _id: id })
+        .populate('korpa.proizvod')
+        .populate('korpa.stamparija', 'institucija')
+      if (!user) return res.status(404).json({ message: 'User not found' })
+      if (!user.korpa.length) return res.status(400).json({ message: 'Cart is empty' })
+
+      // Group cart items by printer.
+      const groups = new Map<string, any[]>()
+      for (const item of user.korpa as any[]) {
+        const printerId = item.stamparija._id.toString()
+        if (!groups.has(printerId)) groups.set(printerId, [])
+        groups.get(printerId)!.push(item)
+      }
+
+      // One invoice (order) per printer.
+      const orders = []
+      for (const items of groups.values()) {
+        const printer = items[0].stamparija
+        const proizvodi = items.map((item: any) => {
+          const product = item.proizvod
+          const usluga = product.uslugeStampe?.find((u: any) => u.idUsluge === item.idUsluge)
+          const jedinicnaCena = product.jedinicnaCena + (usluga ? usluga.dodatnaCenaPoKomadu : 0)
+          return {
+            proizvod: product._id,
+            naziv: product.naziv,
+            kolicina: item.kolicina,
+            boja: item.boja,
+            idUsluge: item.idUsluge,
+            tipStampe: usluga ? usluga.tipStampe : undefined,
+            tekst: item.tekst,
+            slika: item.slika,
+            jedinicnaCena,
+            ukupnaCena: jedinicnaCena * item.kolicina,
+          }
+        })
+        const cena = proizvodi.reduce((sum: number, p: any) => sum + p.ukupnaCena, 0)
+
+        const order = await OrderModel.create({
+          klijent: user._id,
+          stampar: printer._id,
+          stamparija: printer.institucija?.naziv,
+          grad: printer.institucija?.grad,
+          proizvodi,
+          cena,
+          status: 'naruceno',
+          izvor: 'direct',
+        })
+        orders.push(order)
+      }
+
+      // Empty the cart now that the orders are formed.
+      user.set('korpa', [])
+      await user.save()
+
+      // Generate a PDF per invoice and email it to the client (best-effort:
+      // a mail failure must not undo the orders that were already created).
+      for (const order of orders) {
+        try {
+          const pdf = await generateInvoicePdf(order)
+          await sendInvoiceEmail(user.email, order, pdf)
+        } catch (mailErr) {
+          console.log('Invoice PDF/email failed:', mailErr)
+        }
+      }
+
+      res.status(201).json({ message: 'Narudžbine kreirane', count: orders.length })
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({ message: 'Server error' })
+    }
   }
 }
