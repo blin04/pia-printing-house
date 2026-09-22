@@ -1,0 +1,24 @@
+<header>
+  <h1>Printing House</h1>
+</header>
+
+<h2>Dobrodošli, {{ user.ime }} {{ user.prezime }}</h2>
+<p>Prijavljeni ste kao klijent ({{ user.lice }}).</p>
+
+<!-- Menu. Disabled items are placeholders; each is wired up as its feature is built. -->
+<nav>
+  <button disabled>Profil</button> <br />
+  <button disabled>Pretraga proizvoda</button> <br />
+  <button disabled>E-korpa</button> <br />
+  <button disabled>Arhiva</button> <br />
+  @if (user.lice === 'pravno') {
+    <button disabled>Javne nabavke</button> <br />
+  }
+</nav>
+
+<br />
+<button (click)="logout()">Izloguj se</button>
+
+<footer>
+  <p>© 2026 Printing House</p>
+</footer>
