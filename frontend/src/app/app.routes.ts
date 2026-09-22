@@ -5,6 +5,7 @@ import { ClientComponent } from './client/client.component';
 import { PrinterComponent } from './printer/printer.component';
 import { RegisterComponent } from './register/register.component';
 import { ProductComponent } from './product/product.component';
+import { PreparationComponent } from './preparation/preparation.component';
 
 export const routes: Routes = [
     {path: "", component: HomeComponent},
@@ -12,5 +13,6 @@ export const routes: Routes = [
     {path: "client", component: ClientComponent},
     {path: "printer", component: PrinterComponent},
     {path: "register", component: RegisterComponent},
-    {path: "product/:id", component: ProductComponent}
+    {path: "product/:id", component: ProductComponent},
+    {path: "prepare/:id", component: PreparationComponent}
 ];

@@ -1,0 +1,36 @@
+<h3>E-korpa</h3>
+
+@if (groups.length === 0) {
+  <p>Vaša korpa je prazna.</p>
+} @else {
+  @for (g of groups; track g.stamparija) {
+    <h4>{{ g.stamparija }}</h4>
+    <table border="1">
+      <tr>
+        <th>Proizvod</th>
+        <th>Količina</th>
+        <th>Boja</th>
+        <th>Tip štampe</th>
+        <th>Cena</th>
+        <th></th>
+      </tr>
+      @for (item of g.items; track item._id) {
+        <tr>
+          <td>{{ item.proizvod.naziv }}</td>
+          <td>{{ item.kolicina }}</td>
+          <td>{{ item.boja }}</td>
+          <td>{{ tipStampe(item) }}</td>
+          <td>{{ lineTotal(item) }} RSD</td>
+          <td><button (click)="remove(item)">Ukloni</button></td>
+        </tr>
+      }
+    </table>
+    <p>Ukupno ({{ g.stamparija }}): {{ g.total }} RSD</p>
+  }
+
+  <br />
+  <button (click)="confirm()">Potvrdi</button>
+  <button (click)="clear()">Isprazni korpu</button>
+}
+
+@if (message) { <p>{{ message }}</p> }

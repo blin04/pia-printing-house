@@ -7,6 +7,7 @@ import userRouter from './routes/user.routes'
 import orderRouter from './routes/order.routes'
 import productRouter from './routes/product.routes'
 import categoryRouter from './routes/category.routes'
+import cartRouter from './routes/cart.routes'
 
 const app = express()
 app.use(cors())
@@ -25,6 +26,7 @@ router.use('/users', userRouter)
 router.use('/orders', orderRouter)
 router.use('/products', productRouter)
 router.use('/categories', categoryRouter)
+router.use('/cart', cartRouter)
 app.use('/', router)
 
 app.listen(env.port, () => console.log(`Express running on port ${env.port}!`))
