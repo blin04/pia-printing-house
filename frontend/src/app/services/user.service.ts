@@ -19,4 +19,13 @@ export class UserService {
   register(data: any) {
     return this.http.post<User>(`${this.uri}/register`, data);
   }
+
+  getProfile(id: string) {
+    return this.http.get<User>(`${this.uri}/profile/${id}`);
+  }
+
+  // `data` is FormData (personal fields, optional institucija JSON, optional image).
+  updateProfile(data: FormData) {
+    return this.http.post<User>(`${this.uri}/updateProfile`, data);
+  }
 }

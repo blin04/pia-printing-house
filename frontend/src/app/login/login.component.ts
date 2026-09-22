@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginService } from '../services/login.service';
+import { UserService } from '../services/user.service';
 import { User } from '../models/user';
 
 @Component({
@@ -16,7 +16,7 @@ export class LoginComponent {
   password : string = "";
   error : string = "";
 
-  private loginService = inject(LoginService);
+  private userService = inject(UserService);
   private router = inject(Router);
 
   login() : void {
@@ -27,7 +27,7 @@ export class LoginComponent {
       return;
     }
 
-    this.loginService.login(this.username, this.password).subscribe({
+    this.userService.login(this.username, this.password).subscribe({
       next: (user: User) => {
         // Remember who is logged in, then route by user type inferred from the backend.
         localStorage.setItem("user", JSON.stringify(user));

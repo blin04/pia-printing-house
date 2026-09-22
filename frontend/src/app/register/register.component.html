@@ -1,0 +1,34 @@
+<h2>Registracija</h2>
+
+Username: <input type="text" [(ngModel)]="username"> <br />
+Password: <input type="password" [(ngModel)]="password"> <br />
+Ime: <input type="text" [(ngModel)]="ime"> <br />
+Prezime: <input type="text" [(ngModel)]="prezime"> <br />
+Telefon: <input type="text" [(ngModel)]="telefon"> <br />
+Email: <input type="email" [(ngModel)]="email"> <br />
+Profilna slika: <input type="file" accept="image/jpeg,image/png,image/gif" (change)="onFile($event)"> <br />
+
+Tip naloga:
+<select [(ngModel)]="kategorija">
+  <option value="fizicko">Fizičko lice</option>
+  <option value="pravno">Pravno lice</option>
+  <option value="stampar">Štamparija</option>
+</select>
+<br />
+
+@if (kategorija !== 'fizicko') {
+  <h3>Podaci o instituciji</h3>
+  Naziv: <input type="text" [(ngModel)]="naziv"> <br />
+  Adresa sedišta: <input type="text" [(ngModel)]="adresaSedista"> <br />
+  Grad: <input type="text" [(ngModel)]="grad"> <br />
+  Matični broj: <input type="text" [(ngModel)]="maticniBroj"> <br />
+  PIB: <input type="text" [(ngModel)]="pib"> <br />
+}
+
+<br />
+<button (click)="register()">Registruj se</button>
+<button (click)="goToLogin()">Nazad na prijavu</button>
+<br />
+
+@if (error) { <p style="color: red">{{ error }}</p> }
+@if (success) { <p style="color: green">{{ success }}</p> }

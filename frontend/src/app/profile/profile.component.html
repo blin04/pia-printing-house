@@ -1,0 +1,71 @@
+<h3>Moj profil</h3>
+
+<img [src]="uploadsUri + '/' + user.profilna" alt="Profilna slika" width="150" height="150" />
+<br />
+
+<table border="1">
+  <tr><td>Korisničko ime</td><td>{{ user.username }}</td></tr>
+  <tr><td>Ime</td><td><input [(ngModel)]="user.ime"></td></tr>
+  <tr><td>Prezime</td><td><input [(ngModel)]="user.prezime"></td></tr>
+  <tr><td>Telefon</td><td><input [(ngModel)]="user.telefon"></td></tr>
+  <tr><td>Email</td><td><input type="email" [(ngModel)]="user.email"></td></tr>
+</table>
+
+@if (user.institucija) {
+  <h4>Institucija</h4>
+  <table border="1">
+    <tr><td>Naziv</td><td><input [(ngModel)]="user.institucija.naziv"></td></tr>
+    <tr><td>Adresa sedišta</td><td><input [(ngModel)]="user.institucija.adresaSedista"></td></tr>
+    <tr><td>Grad</td><td><input [(ngModel)]="user.institucija.grad"></td></tr>
+    <tr><td>Matični broj</td><td>{{ user.institucija.maticniBroj }}</td></tr>
+    <tr><td>PIB</td><td>{{ user.institucija.pib }}</td></tr>
+  </table>
+}
+
+<br />
+Nova profilna slika:
+<input type="file" accept="image/jpeg,image/png,image/gif" (change)="onFile($event)"> <br />
+
+<br />
+<button (click)="save()">Sačuvaj</button>
+
+@if (error) { <p style="color: red">{{ error }}</p> }
+@if (success) { <p style="color: green">{{ success }}</p> }
+
+<h3>Moje narudžbine</h3>
+
+@if (orders.length === 0) {
+  <p>Nemate narudžbina.</p>
+} @else {
+  <table border="1">
+    <tr>
+      <th>ID fakture</th>
+      <th>Štamparija</th>
+      <th>Grad</th>
+      <th>Proizvodi</th>
+      <th>Ukupno (RSD)</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+    @for (o of orders; track o._id) {
+      <tr>
+        <td>{{ o._id }}</td>
+        <td>{{ o.stamparija }}</td>
+        <td>{{ o.grad }}</td>
+        <td>
+          @for (p of o.proizvodi; track $index) {
+            {{ $index + 1 }}. {{ p.naziv }} ({{ p.kolicina }})<br />
+          }
+        </td>
+        <td>{{ o.cena }}</td>
+        <td>{{ o.status }}</td>
+        <td>
+          @if (o.status === 'naruceno') {
+            <button (click)="cancel(o)">Otkaži</button>
+          }
+        </td>
+      </tr>
+    }
+  </table>
+}
+

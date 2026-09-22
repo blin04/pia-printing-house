@@ -1,3 +1,12 @@
+// Institution data — present for legal-person clients and printers.
+export class Institucija {
+  naziv: string = '';
+  adresaSedista: string = '';
+  grad: string = '';
+  maticniBroj: string = '';
+  pib: string = '';
+}
+
 // Mirrors the user document returned by the backend (Serbian schema fields).
 export class User {
   _id: string = '';
@@ -10,4 +19,5 @@ export class User {
   tip: string = '';    // 'klijent' | 'stampar' | 'admin'
   lice: string = '';   // 'fizicko' | 'pravno'
   status: string = ''; // 'neodobren' | 'odobren' | 'odbijen'
+  institucija?: Institucija;
 }

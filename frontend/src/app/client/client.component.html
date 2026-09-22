@@ -7,8 +7,8 @@
 
 <!-- Menu. Disabled items are placeholders; each is wired up as its feature is built. -->
 <nav>
-  <button disabled>Profil</button> <br />
-  <button disabled>Pretraga proizvoda</button> <br />
+  <button (click)="setView('profile')">Profil</button> <br />
+  <button (click)="setView('search')">Pretraga proizvoda</button> <br />
   <button disabled>E-korpa</button> <br />
   <button disabled>Arhiva</button> <br />
   @if (user.lice === 'pravno') {
@@ -18,6 +18,17 @@
 
 <br />
 <button (click)="logout()">Izloguj se</button>
+
+<hr />
+
+@switch (view) {
+  @case ('profile') {
+    <app-profile />
+  }
+  @case ('search') {
+    <app-search />
+  }
+}
 
 <footer>
   <p>© 2026 Printing House</p>

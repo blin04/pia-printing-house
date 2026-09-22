@@ -1,0 +1,30 @@
+<div>
+  Naziv: <input [(ngModel)]="naziv" />
+  Kategorija:
+  <select [(ngModel)]="kategorija">
+    <option value="">Sve kategorije</option>
+    @for (c of categories; track c._id) {
+      <option [value]="c._id">{{ c.naziv }}</option>
+    }
+  </select>
+  <button (click)="search()">Pretraži</button>
+</div>
+
+<br />
+
+@if (results.length === 0) {
+  <p>Nema rezultata.</p>
+} @else {
+  <table border="1">
+    <tr>
+      <th>Naziv proizvoda</th>
+      <th>Kategorija</th>
+    </tr>
+    @for (p of results; track p._id) {
+      <tr>
+        <td>{{ p.naziv }}</td>
+        <td>{{ p.kategorija?.naziv }}</td>
+      </tr>
+    }
+  </table>
+}

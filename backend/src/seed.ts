@@ -397,6 +397,7 @@ async function main() {
       klijent: marko._id,
       stampar: copyStudio._id,
       stamparija: 'Copy Studio Kumanovska',
+      grad: 'Beograd',
       proizvodi: [
         {
           proizvod: poloMajica._id,
@@ -424,6 +425,7 @@ async function main() {
       klijent: marko._id,
       stampar: copyStudio._id,
       stamparija: 'Copy Studio Kumanovska',
+      grad: 'Beograd',
       proizvodi: [
         {
           proizvod: solja._id,
@@ -451,6 +453,7 @@ async function main() {
       klijent: jovana._id,
       stampar: grafikaPlus._id,
       stamparija: 'Štamparija Grafika Plus',
+      grad: 'Novi Sad',
       proizvodi: [
         {
           proizvod: vizitKarte._id,
@@ -476,6 +479,7 @@ async function main() {
       klijent: jovana._id,
       stampar: printExpress._id,
       stamparija: 'Print Express',
+      grad: 'Niš',
       proizvodi: [
         {
           proizvod: ceger._id,
@@ -521,6 +525,7 @@ async function main() {
       klijent: kreativa._id,
       stampar: copyStudio._id,
       stamparija: 'Copy Studio Kumanovska',
+      grad: 'Beograd',
       proizvodi: [
         {
           proizvod: poloMajica._id,

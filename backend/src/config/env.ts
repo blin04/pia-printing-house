@@ -20,7 +20,7 @@ export const env = {
 
   port: Number(optional('PORT', '4000')),
 
-  mongoUri: optional('MONGODB_URI', 'mongodb://127.0.0.1:27017/printing_house'),
+  mongoUri: optional('MONGODB_URI', 'mongodb://127.0.0.1:27017/stamparija'),
 
   jwtSecret: required('JWT_SECRET'),
   jwtExpiresIn: optional('JWT_EXPIRES_IN', '1d'),

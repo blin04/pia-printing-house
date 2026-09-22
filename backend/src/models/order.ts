@@ -34,7 +34,7 @@ const orderSchema = new Schema(
     klijent: { type: Types.ObjectId, ref: 'UserModel', required: true },
     stampar: { type: Types.ObjectId, ref: 'UserModel', required: true },
     stamparija: { type: String, required: true },
-    // grad: { type: String, required: true },
+    grad: { type: String, required: true },
 
     proizvodi: { type: [orderItemSchema], required: true },
     cena: { type: Number, required: true, min: 0 },
