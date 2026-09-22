@@ -1,4 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Product } from '../models/product';
 import { Category } from '../models/category';
@@ -20,6 +21,7 @@ export class SearchComponent implements OnInit {
 
   private productService = inject(ProductService);
   private categoryService = inject(CategoryService);
+  private router = inject(Router);
 
   ngOnInit(): void {
     // Populate the dropdown with categories that currently have products in stock.
@@ -27,7 +29,6 @@ export class SearchComponent implements OnInit {
       next: (c) => (this.categories = c),
       error: () => {},
     });
-    this.search();
   }
 
   search(): void {
@@ -35,5 +36,9 @@ export class SearchComponent implements OnInit {
       next: (r) => (this.results = r),
       error: () => {},
     });
+  }
+
+  goToDetails(id: string): void {
+    this.router.navigate(['product', id]);
   }
 }

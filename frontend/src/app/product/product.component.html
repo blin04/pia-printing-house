@@ -1,1 +1,70 @@
-<p>product works!</p>
+<button (click)="back()">Nazad</button>
+
+<h2>{{ product.naziv }}</h2>
+
+<!-- gallery -->
+@if (currentImage) {
+  <img [src]="uploadsUri + '/' + currentImage" [alt]="product.naziv" width="300" />
+  <br />
+}
+@if (product.dodatneSlike && product.dodatneSlike.length) {
+  <div>
+    <img [src]="uploadsUri + '/' + product.slikaUrl" width="60" style="cursor: pointer"
+         (click)="setImage(product.slikaUrl)" />
+    @for (t of product.dodatneSlike; track t) {
+      <img [src]="uploadsUri + '/' + t" width="60" style="cursor: pointer" (click)="setImage(t)" />
+    }
+  </div>
+}
+
+<p>Štamparija: {{ product.stampar?.institucija?.naziv }}</p>
+<p>Grad: {{ product.stampar?.institucija?.grad }}</p>
+<p>Sviđanja: {{ product.likes }} | Nesviđanja: {{ product.dislikes }}</p>
+
+<!-- extended info -->
+@if (isClient) {
+  <hr />
+
+  <p>{{ product.opis }}</p>
+  <p>Cena po komadu: {{ product.jedinicnaCena }} RSD</p>
+
+  Boja:
+  <select [(ngModel)]="boja">
+    @if (product.dostupneBoje && product.dostupneBoje.length) {
+      @for (b of product.dostupneBoje; track b) {
+        <option [value]="b">{{ b }}</option>
+      }
+    } @else {
+      <option value="Bela">Bela</option>
+    }
+  </select>
+  <br />
+
+  <h3>Vrste štampe</h3>
+  @if (product.uslugeStampe && product.uslugeStampe.length) {
+    <table border="1">
+      <tr>
+        <th>Tip štampe</th>
+        <th>Max dimenzije (mm)</th>
+        <th>Dodatna cena po komadu</th>
+      </tr>
+      @for (u of product.uslugeStampe; track u.idUsluge) {
+        <tr>
+          <td>{{ u.tipStampe }}</td>
+          <td>{{ u.maxSirinaMm }} x {{ u.maxVisinaMm }}</td>
+          <td>{{ u.dodatnaCenaPoKomadu }} RSD</td>
+        </tr>
+      }
+    </table>
+  } @else {
+    <p>Nema dodatnih vrsta štampe.</p>
+  }
+
+  @if (mapUrl) {
+    <h3>Lokacija štamparije</h3>
+    <iframe [src]="mapUrl" width="400" height="250"></iframe>
+  }
+
+  <br />
+  <button (click)="dalje()">Dalje</button>
+}

@@ -19,11 +19,13 @@
     <tr>
       <th>Naziv proizvoda</th>
       <th>Kategorija</th>
+      <th></th>
     </tr>
     @for (p of results; track p._id) {
       <tr>
         <td>{{ p.naziv }}</td>
-        <td>{{ p.kategorija?.naziv }}</td>
+        <td>{{ p.kategorija.naziv }}</td>
+        <td><button (click)="goToDetails(p._id)">Detalji</button></td>
       </tr>
     }
   </table>

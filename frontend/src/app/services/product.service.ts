@@ -16,4 +16,8 @@ export class ProductService {
     if (kategorija) params.kategorija = kategorija;
     return this.http.get<Product[]>(`${this.uri}/search`, { params });
   }
+
+  details(id: string) {
+    return this.http.get<Product>(`${this.uri}/details/${id}`);
+  }
 }
