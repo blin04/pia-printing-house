@@ -10,6 +10,7 @@
   <button (click)="setView('products')">Proizvodi i usluge</button> <br />
   <button (click)="setView('stock')">Ažuriranje zaliha</button> <br />
   <button (click)="setView('orders')">Naručeni proizvodi</button> <br />
+  <button (click)="setView('bidding')">Licitacije</button> <br />
 </nav>
 
 <br />
@@ -29,6 +30,9 @@
   }
   @case ('orders') {
     <app-ordered-products />
+  }
+  @case ('bidding') {
+    <app-bidding />
   }
 }
 

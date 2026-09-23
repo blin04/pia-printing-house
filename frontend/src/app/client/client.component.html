@@ -12,7 +12,7 @@
   <button (click)="setView('cart')">E-korpa</button> <br />
   <button (click)="setView('archive')">Arhiva</button> <br />
   @if (user.lice === 'pravno') {
-    <button disabled>Javne nabavke</button> <br />
+    <button (click)="setView('nabavke')">Javne nabavke</button> <br />
   }
 </nav>
 
@@ -33,6 +33,9 @@
   }
   @case ('archive') {
     <app-archive />
+  }
+  @case ('nabavke') {
+    <app-procurement />
   }
 }
 

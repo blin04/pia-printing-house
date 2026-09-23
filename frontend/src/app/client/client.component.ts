@@ -5,10 +5,17 @@ import { ProfileComponent } from '../profile/profile.component';
 import { SearchComponent } from '../search/search.component';
 import { CartComponent } from '../cart/cart.component';
 import { ArchiveComponent } from '../archive/archive.component';
+import { ProcurementComponent } from '../procurement/procurement.component';
 
 @Component({
   selector: 'app-client',
-  imports: [ProfileComponent, SearchComponent, CartComponent, ArchiveComponent],
+  imports: [
+    ProfileComponent,
+    SearchComponent,
+    CartComponent,
+    ArchiveComponent,
+    ProcurementComponent,
+  ],
   templateUrl: './client.component.html',
   styleUrl: './client.component.css',
 })

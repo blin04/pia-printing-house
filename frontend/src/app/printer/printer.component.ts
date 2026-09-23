@@ -5,6 +5,7 @@ import { ProfileComponent } from '../profile/profile.component';
 import { PrinterProductsComponent } from '../printer-products/printer-products.component';
 import { PrinterStockComponent } from '../printer-stock/printer-stock.component';
 import { OrderedProductsComponent } from '../ordered-products/ordered-products.component';
+import { BiddingComponent } from '../bidding/bidding.component';
 
 @Component({
   selector: 'app-printer',
@@ -13,6 +14,7 @@ import { OrderedProductsComponent } from '../ordered-products/ordered-products.c
     PrinterProductsComponent,
     PrinterStockComponent,
     OrderedProductsComponent,
+    BiddingComponent,
   ],
   templateUrl: './printer.component.html',
   styleUrl: './printer.component.css',

@@ -1,0 +1,42 @@
+<h3>Licitacije — otvorene javne nabavke</h3>
+
+@if (auctions.length === 0) {
+  <p>Nema otvorenih nabavki.</p>
+} @else {
+  @for (a of auctions; track a._id) {
+    <div style="border: 1px solid #ccc; padding: 8px; margin: 6px 0">
+      <b>Nabavka {{ a._id }}</b> — naručilac: {{ a.nazivKlijenta }}
+      <br />
+      Ističe: {{ a.zavrsetak | date: 'dd.MM.yyyy. HH:mm' }}
+
+      <table border="1">
+        <tr>
+          <th>Traženi proizvod</th>
+          <th>Količina</th>
+          <th>Boja</th>
+          <th>Vaš proizvod</th>
+          <th>Cena po komadu</th>
+        </tr>
+        @for (item of a.potrebniProizvodi; track item._id) {
+          <tr>
+            <td>{{ item.naziv }}@if (item.tipStampe) { ({{ item.tipStampe }}) }</td>
+            <td>{{ item.kolicina }}</td>
+            <td>{{ item.boja }}</td>
+            <td>
+              <select [(ngModel)]="item.selProizvod">
+                <option value="">-- izaberi --</option>
+                @for (p of myProducts; track p._id) {
+                  <option [value]="p._id">{{ p.naziv }}</option>
+                }
+              </select>
+            </td>
+            <td><input type="number" min="0" [(ngModel)]="item.cena" /></td>
+          </tr>
+        }
+      </table>
+
+      <button (click)="submit(a)">Pošalji ponudu</button>
+      @if (message[a._id]) { <span style="color: green"> {{ message[a._id] }}</span> }
+    </div>
+  }
+}

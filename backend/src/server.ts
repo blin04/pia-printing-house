@@ -9,6 +9,7 @@ import productRouter from './routes/product.routes'
 import categoryRouter from './routes/category.routes'
 import cartRouter from './routes/cart.routes'
 import commentRouter from './routes/comment.routes'
+import auctionRouter from './routes/auction.routes'
 
 const app = express()
 app.use(cors())
@@ -29,6 +30,7 @@ router.use('/products', productRouter)
 router.use('/categories', categoryRouter)
 router.use('/cart', cartRouter)
 router.use('/comments', commentRouter)
+router.use('/auctions', auctionRouter)
 app.use('/', router)
 
 app.listen(env.port, () => console.log(`Express running on port ${env.port}!`))

@@ -55,3 +55,23 @@ export async function sendPasswordResetEmail(to: string, link: string) {
   return info
 }
 
+export async function sendProcurementEmail(to: string, auction: any) {
+  const transporter = await getTransporter()
+  const stavke = auction.potrebniProizvodi
+    .map((p: any, i: number) => `${i + 1}. ${p.naziv} — ${p.kolicina} kom`)
+    .join('\n')
+  const info = await transporter.sendMail({
+    from: env.smtp.from,
+    to,
+    subject: `Otvorena javna nabavka ${auction._id}`,
+    text:
+      `Otvorena je javna nabavka (ID: ${auction._id}).\n` +
+      `Rok za ponude: ${new Date(auction.zavrsetak).toLocaleString('sr-RS')}.\n\n` +
+      `Traženi proizvodi:\n${stavke}\n\n` +
+      `Prijavite se i pošaljite ponudu na stranici „Licitacije“.`,
+  })
+  const preview = nodemailer.getTestMessageUrl(info)
+  if (preview) console.log('Procurement email preview URL:', preview)
+  return info
+}
+

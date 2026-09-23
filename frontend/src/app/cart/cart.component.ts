@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { User } from '../models/user';
 import { CartItem } from '../models/cart';
 import { CartService } from '../services/cart.service';
+import { AuctionService } from '../services/auction.service';
 
 // Cart contents grouped by printer, for display.
 interface PrinterGroup {
@@ -22,6 +23,7 @@ export class CartComponent implements OnInit {
   message = '';
 
   private cartService = inject(CartService);
+  private auctionService = inject(AuctionService);
 
   ngOnInit(): void {
     const stored = localStorage.getItem('user');
@@ -80,6 +82,20 @@ export class CartComponent implements OnInit {
 
   confirm(): void {
     this.message = '';
+    // Legal-entity clients open a procurement (auction) instead of invoices.
+    if (this.user.lice === 'pravno') {
+      this.auctionService.create(this.user._id).subscribe({
+        next: () => {
+          this.message = 'Javna nabavka je otvorena.';
+          this.loadCart();
+        },
+        error: (err) => {
+          this.message = err?.error?.message ?? 'Greška pri otvaranju nabavke.';
+        },
+      });
+      return;
+    }
+
     this.cartService.checkout(this.user._id).subscribe({
       next: () => {
         this.message = 'Narudžbina je potvrđena.';
