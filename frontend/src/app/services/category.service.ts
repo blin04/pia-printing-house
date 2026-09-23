@@ -16,4 +16,12 @@ export class CategoryService {
   getAll() {
     return this.http.get<Category[]>(`${this.uri}/all`);
   }
+
+  addCategory(naziv: string) {
+    return this.http.post<Category>(`${this.uri}/add`, { naziv });
+  }
+
+  addSubcategory(id: string, naziv: string) {
+    return this.http.post<Category>(`${this.uri}/addSubcategory`, { id, naziv });
+  }
 }

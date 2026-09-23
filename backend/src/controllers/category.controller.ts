@@ -28,4 +28,35 @@ export class CategoryController {
       res.status(500).json({ message: 'Server error' })
     }
   }
+
+  // POST /categories/add
+  add = async (req: express.Request, res: express.Response) => {
+    try {
+      const { naziv } = req.body
+      if (!naziv) return res.status(400).json({ message: 'Nedostaje ime kategorije' })
+      const category = await CategoryModel.create({ naziv, podkategorije: [] })
+      res.status(201).json(category)
+    } catch (err: any) {
+      if (err?.code === 11000)
+        return res.status(400).json({ message: 'Kategorija sa tim nazivom već postoji' })
+      console.log(err)
+      res.status(500).json({ message: 'Server error' })
+    }
+  }
+
+  // POST /categories/addSubcategory
+  addSubcategory = async (req: express.Request, res: express.Response) => {
+    try {
+      const { id, naziv } = req.body
+      if (!id || !naziv) return res.status(400).json({ message: 'Nedostaju podaci' })
+      const category = await CategoryModel.findById(id)
+      if (!category) return res.status(404).json({ message: 'Nepostojeća kategorija' })
+      category.podkategorije.push({ naziv } as any)
+      await category.save()
+      res.status(201).json(category)
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({ message: 'Server error' })
+    }
+  }
 }

@@ -1,1 +1,99 @@
-<p>admin works!</p>
+<header>
+  <h1>Printing House — Administracija</h1>
+</header>
+
+<button (click)="logout()">Izloguj se</button>
+@if (message) { <p style="color: green">{{ message }}</p> }
+
+<!-- 1. Pending registration requests -->
+<h2>Zahtevi za registraciju</h2>
+@if (pending.length === 0) {
+  <p>Nema zahteva na čekanju.</p>
+} @else {
+  <table border="1">
+    <tr>
+      <th>Korisničko ime</th>
+      <th>Ime</th>
+      <th>Prezime</th>
+      <th>Tip</th>
+      <th>Lice</th>
+      <th>Institucija</th>
+      <th>Email</th>
+      <th></th>
+    </tr>
+    @for (u of pending; track u._id) {
+      <tr>
+        <td>{{ u.username }}</td>
+        <td>{{ u.ime }}</td>
+        <td>{{ u.prezime }}</td>
+        <td>{{ u.tip }}</td>
+        <td>{{ u.lice }}</td>
+        <td>{{ u.institucija?.naziv }}</td>
+        <td>{{ u.email }}</td>
+        <td>
+          <button (click)="approve(u)">Odobri</button>
+          <button (click)="reject(u)">Odbij</button>
+        </td>
+      </tr>
+    }
+  </table>
+}
+
+<!-- 2. All users -->
+<h2>Svi korisnici</h2>
+<table border="1">
+  <tr>
+    <th>Korisničko ime</th>
+    <th>Ime</th>
+    <th>Prezime</th>
+    <th>Telefon</th>
+    <th>Email</th>
+    <th>Tip</th>
+    <th>Status</th>
+    <th></th>
+  </tr>
+  @for (u of users; track u._id) {
+    <tr>
+      <td>{{ u.username }}</td>
+      <td><input [(ngModel)]="u.ime" /></td>
+      <td><input [(ngModel)]="u.prezime" /></td>
+      <td><input [(ngModel)]="u.telefon" /></td>
+      <td><input [(ngModel)]="u.email" /></td>
+      <td>{{ u.tip }}</td>
+      <td>{{ u.status }}</td>
+      <td>
+        <button (click)="updateUser(u)">Ažuriraj</button>
+        <button (click)="deleteUser(u)">Obriši</button>
+      </td>
+    </tr>
+  }
+</table>
+
+<!-- 3. Categories + subcategories -->
+<h2>Kategorije</h2>
+<table border="1">
+  <tr>
+    <th>Kategorija</th>
+    <th>Potkategorije</th>
+    <th>Dodaj potkategoriju</th>
+  </tr>
+  @for (c of categories; track c._id) {
+    <tr>
+      <td>{{ c.naziv }}</td>
+      <td>
+        @for (s of c.podkategorije; track s._id) {
+          {{ s.naziv }}<br />
+        }
+      </td>
+      <td>
+        <input [(ngModel)]="newSub[c._id]" placeholder="Naziv potkategorije" />
+        <button (click)="addSubcategory(c)">Dodaj</button>
+      </td>
+    </tr>
+  }
+</table>
+
+<br />
+Nova kategorija:
+<input [(ngModel)]="newCategoryName" placeholder="Naziv kategorije" />
+<button (click)="addCategory()">Dodaj kategoriju</button>

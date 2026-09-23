@@ -14,8 +14,6 @@ export class UserService {
     return this.http.post<User>(`${this.uri}/login`, data);
   }
 
-  // `data` mirrors the backend register payload (basic fields + tip/lice and,
-  // for pravno lice / stampar, an `institucija` object).
   register(data: any) {
     return this.http.post<User>(`${this.uri}/register`, data);
   }
@@ -24,8 +22,35 @@ export class UserService {
     return this.http.get<User>(`${this.uri}/profile/${id}`);
   }
 
-  // `data` is FormData (personal fields, optional institucija JSON, optional image).
   updateProfile(data: FormData) {
     return this.http.post<User>(`${this.uri}/updateProfile`, data);
+  }
+
+  adminLogin(username: string, password: string) {
+    return this.http.post<User>(`${this.uri}/adminLogin`, { username, password });
+  }
+
+  getPending() {
+    return this.http.get<User[]>(`${this.uri}/pending`);
+  }
+
+  approve(id: string) {
+    return this.http.post(`${this.uri}/approve`, { id });
+  }
+
+  reject(id: string) {
+    return this.http.post(`${this.uri}/reject`, { id });
+  }
+
+  getAllUsers() {
+    return this.http.get<User[]>(`${this.uri}/all`);
+  }
+
+  adminUpdate(data: any) {
+    return this.http.post<User>(`${this.uri}/adminUpdate`, data);
+  }
+
+  deleteUser(id: string) {
+    return this.http.post(`${this.uri}/delete`, { id });
   }
 }

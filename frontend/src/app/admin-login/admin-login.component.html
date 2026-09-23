@@ -1,1 +1,9 @@
-<p>admin-login works!</p>
+<h2>Admin prijava</h2>
+
+Username: <input type="text" [(ngModel)]="username"> <br />
+Password: <input type="password" [(ngModel)]="password"> <br />
+<button (click)="login()">Login</button>
+<br />
+@if (error) {
+  <p style="color: red">{{ error }}</p>
+}

@@ -18,8 +18,6 @@ export class UserController {
       const { username, password, ime, prezime, telefon, email, tip, lice } = req.body
       let { institucija } = req.body
 
-      // When sent as multipart/form-data (with a profile image) nested objects
-      // arrive as JSON strings — parse it back into an object.
       if (typeof institucija === 'string') {
         try {
           institucija = JSON.parse(institucija)
@@ -175,9 +173,6 @@ export class UserController {
   }
 
   // POST /users/updateProfile
-  // Updates personal data (never username/tip/lice/status/maticniBroj/pib) and,
-  // optionally, the profile image. The acting user id comes in the body for now
-  // (no auth transport yet).
   updateProfile = async (req: express.Request, res: express.Response) => {
     try {
       const { id, ime, prezime, telefon, email } = req.body
@@ -255,6 +250,124 @@ export class UserController {
       const obj: any = user.toObject()
       delete obj.passwordHash
       return res.json(obj)
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json({ message: 'Server error' })
+    }
+  }
+
+  // POST /users/adminLogin
+  adminLogin = async (req: express.Request, res: express.Response) => {
+    try {
+      const { username, password } = req.body
+      if (!username || !password)
+        return res.status(400).json({ message: 'Missing credentials' })
+
+      const user = await UserModel.findOne({ username })
+      if (!user || !bcrypt.compareSync(password, user.passwordHash))
+        return res.status(401).json({ message: 'Invalid username or password' })
+      if (user.tip !== 'admin') return res.status(403).json({ message: 'Not an admin' })
+
+      const obj: any = user.toObject()
+      delete obj.passwordHash
+      return res.json(obj)
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json({ message: 'Server error' })
+    }
+  }
+
+  // GET /users/pending — unapproved registration requests.
+  getPending = async (req: express.Request, res: express.Response) => {
+    try {
+      const users = await UserModel.find({ status: 'neodobren' })
+        .select('-passwordHash')
+      return res.json(users)
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json({ message: 'Server error' })
+    }
+  }
+
+  // POST /users/approve  { id }
+  approve = async (req: express.Request, res: express.Response) => {
+    try {
+      await UserModel.updateOne(
+        { _id: req.body.id },
+        { status: 'odobren' }
+      )
+      const user = await UserModel.findOne({ _id: req.body.id })
+        .select('-passwordHash')
+      if (!user) return res.status(404).json({ message: 'User not found' })
+      return res.json(user)
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json({ message: 'Server error' })
+    }
+  }
+
+  // POST /users/reject  { id }
+  reject = async (req: express.Request, res: express.Response) => {
+    try {
+      await UserModel.updateOne(
+        req.body.id,
+        { status: 'odbijen' },
+      )
+      const user = await UserModel.findOne({ _id : req.body.id })
+        .select('-passwordHash')
+      if (!user) return res.status(404).json({ message: 'User not found' })
+      return res.json(user)
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json({ message: 'Server error' })
+    }
+  }
+
+  // GET /users/all — every user (management table).
+  getAll = async (req: express.Request, res: express.Response) => {
+    try {
+      const users = await UserModel.find({}).select('-passwordHash')
+      return res.json(users)
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json({ message: 'Server error' })
+    }
+  }
+
+  // POST /users/adminUpdate
+  adminUpdate = async (req: express.Request, res: express.Response) => {
+    try {
+      const { id, ime, prezime, telefon, email } = req.body
+      if (!id) return res.status(400).json({ message: 'Missing user id' })
+
+      const user = await UserModel.findOne({_id: id}).select('-passwordHash')
+      if (!user) return res.status(404).json({ message: 'User not found' })
+
+      if (email && email.toLowerCase() !== user.email) {
+        const lower = email.toLowerCase()
+        if (await UserModel.findOne({ email: lower, _id: { $ne: user._id } }))
+          return res.status(400).json({ message: 'Email already registered' })
+        user.email = lower
+      }
+      if (ime) user.ime = ime
+      if (prezime) user.prezime = prezime
+      if (telefon) user.telefon = telefon
+
+      await user.save()
+      const obj: any = user.toObject()
+      return res.json(obj)
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json({ message: 'Server error' })
+    }
+  }
+
+  // POST /users/delete  { id }
+  deleteUser = async (req: express.Request, res: express.Response) => {
+    try {
+      const user = await UserModel.findByIdAndDelete(req.body.id)
+      if (!user) return res.status(404).json({ message: 'User not found' })
+      return res.sendStatus(200)
     } catch (err) {
       console.log(err)
       return res.status(500).json({ message: 'Server error' })
