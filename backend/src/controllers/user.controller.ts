@@ -6,6 +6,8 @@ import { randomUUID } from 'crypto'
 import { imageSize } from 'image-size'
 import UserModel from '../models/user'
 import { UPLOADS_DIR } from '../config/upload'
+import { env } from '../config/env'
+import { sendPasswordResetEmail } from '../utils/mail'
 
 const PASSWORD_REGEX = /^(?=.{8,12}$)(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])[A-Za-z].*$/
 const MATICNI_BROJ_REGEX = /^\d{8}$/
@@ -362,12 +364,76 @@ export class UserController {
     }
   }
 
-  // POST /users/delete  { id }
+  // POST /users/delete
   deleteUser = async (req: express.Request, res: express.Response) => {
     try {
       const user = await UserModel.findByIdAndDelete(req.body.id)
       if (!user) return res.status(404).json({ message: 'User not found' })
       return res.sendStatus(200)
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json({ message: 'Server error' })
+    }
+  }
+
+  // POST /users/requestPasswordReset
+  requestPasswordReset = async (req: express.Request, res: express.Response) => {
+    try {
+      const { identifier } = req.body
+      if (!identifier)
+        return res.status(400).json({ message: 'Unesite korisničko ime ili email' })
+
+      const user = await UserModel.findOne({
+        $or: [{ username: identifier }, { email: identifier.toLowerCase() }],
+      })
+
+      if (user) {
+        const token = randomUUID()
+        user.resetToken = token
+        user.resetTokenExpires = new Date(Date.now() + env.resetTokenTtlMin * 60 * 1000)
+        await user.save()
+
+        const link = `${env.clientUrl}/reset/${token}`
+        try {
+          await sendPasswordResetEmail(user.email, link)
+        } catch (mailErr) {
+          console.log('Reset email failed:', mailErr)
+        }
+      }
+
+      return res.json({
+        message: 'Ako nalog postoji, poslat je link za poništavanje lozinke.',
+      })
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json({ message: 'Server error' })
+    }
+  }
+
+  // POST /users/resetPassword
+  resetPassword = async (req: express.Request, res: express.Response) => {
+    try {
+      const { token, password } = req.body
+      if (!token || !password) return res.status(400).json({ message: 'Nedostaju podaci' })
+
+      if (!PASSWORD_REGEX.test(password))
+        return res.status(400).json({
+          message:
+            'Lozinka mora imati 8–12 karaktera, počinjati slovom i sadržati veliko slovo, cifru i specijalni karakter',
+        })
+
+      const user = await UserModel.findOne({
+        resetToken: token,
+        resetTokenExpires: { $gt: new Date() },
+      })
+      if (!user) return res.status(400).json({ message: 'Nevažeći ili zastareo link' })
+
+      user.passwordHash = bcrypt.hashSync(password, 10)
+      user.resetToken = undefined
+      user.resetTokenExpires = undefined
+      await user.save()
+
+      return res.json({ message: 'Lozinka je uspešno promenjena.' })
     } catch (err) {
       console.log(err)
       return res.status(500).json({ message: 'Server error' })

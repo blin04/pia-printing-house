@@ -38,3 +38,20 @@ export async function sendInvoiceEmail(to: string, order: any, pdf: Buffer) {
   if (preview) console.log('Invoice email preview URL:', preview)
   return info
 }
+
+export async function sendPasswordResetEmail(to: string, link: string) {
+  const transporter = await getTransporter()
+  const info = await transporter.sendMail({
+    from: env.smtp.from,
+    to,
+    subject: 'Poništavanje lozinke — Printing House',
+    text:
+      `Zatražili ste poništavanje lozinke. Otvorite sledeći link kako ` +
+      `biste postavili novu lozinku:\n\n${link}\n\n` +
+      `Ovaj link važi 5 minuta.`
+  })
+  const preview = nodemailer.getTestMessageUrl(info)
+  if (preview) console.log('Password reset email preview URL:', preview)
+  return info
+}
+

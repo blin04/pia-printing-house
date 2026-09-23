@@ -20,4 +20,12 @@ userRouter.route('/all').get((req, res) => new UserController().getAll(req, res)
 userRouter.route('/adminUpdate').post((req, res) => new UserController().adminUpdate(req, res))
 userRouter.route('/delete').post((req, res) => new UserController().deleteUser(req, res))
 
+// Forgotten password
+userRouter
+  .route('/requestPasswordReset')
+  .post((req, res) => new UserController().requestPasswordReset(req, res))
+userRouter
+  .route('/resetPassword')
+  .post((req, res) => new UserController().resetPassword(req, res))
+
 export default userRouter

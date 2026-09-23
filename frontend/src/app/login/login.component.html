@@ -2,6 +2,8 @@ Username: <input type="text" [(ngModel)]="username"> <br />
 Password: <input type="password" [(ngModel)]="password"> <br />
 <button (click)="login()">Login</button>
 <br />
+<a routerLink="/forgot">Zaboravljena lozinka?</a>
+<br />
 @if (error) {
   <p style="color: red">{{ error }}</p>
 }

@@ -53,4 +53,12 @@ export class UserService {
   deleteUser(id: string) {
     return this.http.post(`${this.uri}/delete`, { id });
   }
+
+  requestPasswordReset(identifier: string) {
+    return this.http.post(`${this.uri}/requestPasswordReset`, { identifier });
+  }
+
+  resetPassword(token: string, password: string) {
+    return this.http.post(`${this.uri}/resetPassword`, { token, password });
+  }
 }
