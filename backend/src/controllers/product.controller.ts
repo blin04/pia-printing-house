@@ -1,5 +1,10 @@
 import express from "express";
+import fs from 'fs'
+import path from 'path'
+import { randomUUID } from 'crypto'
+import { imageSize } from 'image-size'
 import ProductModel from '../models/product'
+import { UPLOADS_DIR } from '../config/upload'
 
 export class ProductController {
   // GET /products/search?naziv=&kategorija=
@@ -123,6 +128,20 @@ export class ProductController {
       } as any)
       await product.save()
       res.status(201).json(product)
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({ message: 'Server error' })
+    }
+  }
+
+  // GET /products/top5
+  top5 = async (req: express.Request, res: express.Response) => {
+    try {
+      const products = await ProductModel.find({})
+        .sort({likes : -1})
+        .limit(5)
+        .select('naziv likes')
+      res.status(200).json(products)
     } catch (err) {
       console.log(err)
       res.status(500).json({ message: 'Server error' })

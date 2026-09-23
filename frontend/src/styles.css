@@ -1,1 +1,288 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles — Gruvbox Dark theme.
+   Targets plain HTML elements only (no component library), so it applies
+   across every page without touching individual templates. */
+
+:root {
+  color-scheme: dark;
+
+  /* Gruvbox Dark palette */
+  --gb-bg0: #282828;
+  --gb-bg0-soft: #32302f;
+  --gb-bg1: #3c3836;
+  --gb-bg2: #504945;
+  --gb-bg3: #665c54;
+  --gb-bg4: #7c6f64;
+
+  --gb-fg0: #fbf1c7;
+  --gb-fg1: #ebdbb2;
+  --gb-fg2: #d5c4a1;
+  --gb-fg3: #bdae93;
+  --gb-fg4: #a89984;
+
+  --gb-red: #fb4934;
+  --gb-green: #b8bb26;
+  --gb-yellow: #fabd2f;
+  --gb-blue: #83a598;
+  --gb-purple: #d3869b;
+  --gb-aqua: #8ec07c;
+  --gb-orange: #fe8019;
+  --gb-gray: #928374;
+}
+
+/* --- Reset & base ------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--gb-bg0);
+  color: var(--gb-fg1);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+app-root {
+  display: block;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 3rem;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* --- Headings & text ----------------------------------------------------- */
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--gb-yellow);
+  font-weight: 600;
+  margin: 0.7em 0 0.4em;
+  line-height: 1.25;
+}
+
+h1 {
+  font-size: 1.6rem;
+  border-bottom: 1px solid var(--gb-bg2);
+  padding-bottom: 0.35em;
+}
+
+h2 {
+  font-size: 1.3rem;
+}
+
+h3 {
+  font-size: 1.1rem;
+}
+
+p {
+  margin: 0.5em 0;
+}
+
+a {
+  color: var(--gb-blue);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--gb-aqua);
+  text-decoration: underline;
+}
+
+a:visited {
+  color: var(--gb-purple);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--gb-bg2);
+  margin: 1.25rem 0;
+}
+
+/* --- Layout landmarks ---------------------------------------------------- */
+
+header {
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--gb-bg2);
+}
+
+footer {
+  margin-top: 2rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--gb-bg2);
+  color: var(--gb-fg4);
+  font-size: 0.85rem;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  margin-bottom: 0.75rem;
+}
+
+nav button {
+  width: fit-content;
+  min-width: 10rem;
+  text-align: left;
+}
+
+/* --- Buttons -------------------------------------------------------------- */
+
+button {
+  background: var(--gb-bg1);
+  color: var(--gb-fg1);
+  border: 1px solid var(--gb-bg3);
+  border-radius: 3px;
+  padding: 0.4em 0.9em;
+  margin: 0.15em 0.3em 0.15em 0;
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: background-color 0.12s ease, border-color 0.12s ease;
+}
+
+button:hover:not(:disabled) {
+  background: var(--gb-bg2);
+  border-color: var(--gb-orange);
+}
+
+button:active:not(:disabled) {
+  background: var(--gb-bg3);
+}
+
+button:focus-visible {
+  outline: 2px solid var(--gb-yellow);
+  outline-offset: 1px;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* --- Forms ----------------------------------------------------------------- */
+
+input,
+select,
+textarea {
+  background: var(--gb-bg0-soft);
+  color: var(--gb-fg1);
+  border: 1px solid var(--gb-bg3);
+  border-radius: 3px;
+  padding: 0.35em 0.55em;
+  margin: 0.15em 0;
+  font-size: 0.95em;
+  font-family: inherit;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--gb-fg4);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--gb-yellow);
+}
+
+input:disabled,
+select:disabled {
+  opacity: 0.5;
+}
+
+/* --- Tables ------------------------------------------------------------------ */
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.6rem 0 1.25rem;
+  background: var(--gb-bg0-soft);
+  font-size: 0.92em;
+}
+
+table,
+th,
+td {
+  border: 1px solid var(--gb-bg2);
+}
+
+th,
+td {
+  padding: 0.45em 0.65em;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: var(--gb-bg1);
+  color: var(--gb-yellow);
+  font-weight: 600;
+}
+
+tbody tr:hover td,
+tr:hover td {
+  background: var(--gb-bg1);
+}
+
+/* --- Scrollbars (WebKit) ----------------------------------------------------- */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--gb-bg0);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gb-bg3);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gb-bg4);
+}
+
+::selection {
+  background: var(--gb-orange);
+  color: var(--gb-bg0);
+}
+
+/* --- Responsive ----------------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  app-root {
+    padding: 0.75rem 0.85rem 2rem;
+  }
+
+  table {
+    font-size: 0.85em;
+  }
+
+  nav button {
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 1.35rem;
+  }
+}

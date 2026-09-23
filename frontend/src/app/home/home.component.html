@@ -2,5 +2,21 @@
 <button routerLink="register">Register</button>
 <button routerLink="login">Login</button>
 
+<h2>Najbolje ocenjeni proizvodi</h2>
+  @if (topProducts.length === 0) {
+    <p>Nema ocenjenih proizvoda</p>
+  } @else {
+    <table border="1">
+      <tr>
+        <th>Naziv</th>
+        <th>Broj lajkova</th>
+      </tr>
+      @for (p of topProducts; track p.naziv) {
+        <tr>
+          <td>{{ p.naziv }}</td>
+          <td>{{ p.likes }}</td>
+      }
+    </table>
+  }
 <h2>Pretraga proizvoda</h2>
 <app-search />

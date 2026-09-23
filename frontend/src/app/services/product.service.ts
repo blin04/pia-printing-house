@@ -36,4 +36,8 @@ export class ProductService {
   addService(id: string, usluga: any) {
     return this.http.post(`${this.uri}/addService`, { id, usluga });
   }
+
+  top5() {
+    return this.http.get<Product[]>(`${this.uri}/top5`)
+  }
 }

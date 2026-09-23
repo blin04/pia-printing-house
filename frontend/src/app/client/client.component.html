@@ -1,25 +1,22 @@
 <header>
   <h1>Printing House</h1>
+  <p class="user-blurb">Dobrodošli, {{ user.ime }} {{ user.prezime }} — klijent ({{ user.lice }})</p>
 </header>
 
-<h2>Dobrodošli, {{ user.ime }} {{ user.prezime }}</h2>
-<p>Prijavljeni ste kao klijent ({{ user.lice }}).</p>
-
-<!-- Menu. Disabled items are placeholders; each is wired up as its feature is built. -->
 <nav>
-  <button (click)="setView('profile')">Profil</button> <br />
-  <button (click)="setView('search')">Pretraga proizvoda</button> <br />
-  <button (click)="setView('cart')">E-korpa</button> <br />
-  <button (click)="setView('archive')">Arhiva</button> <br />
-  @if (user.lice === 'pravno') {
-    <button (click)="setView('nabavke')">Javne nabavke</button> <br />
-  }
+  <div class="nav-links">
+    <button [class.active]="view === 'profile'" (click)="setView('profile')">Profil</button>
+    <button [class.active]="view === 'search'" (click)="setView('search')">Pretraga proizvoda</button>
+    <button [class.active]="view === 'cart'" (click)="setView('cart')">E-korpa</button>
+    <button [class.active]="view === 'archive'" (click)="setView('archive')">Arhiva</button>
+    @if (user.lice === 'pravno') {
+      <button [class.active]="view === 'nabavke'" (click)="setView('nabavke')">Javne nabavke</button>
+    }
+  </div>
+  <div class="nav-actions">
+    <button (click)="logout()">Izloguj se</button>
+  </div>
 </nav>
-
-<br />
-<button (click)="logout()">Izloguj se</button>
-
-<hr />
 
 @switch (view) {
   @case ('profile') {
