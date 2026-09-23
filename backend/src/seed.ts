@@ -467,7 +467,7 @@ async function main() {
         },
       ],
       cena: rsd(vizitJed * 200),
-      status: 'u_stampi',
+      status: 'u stampi',
       izvor: 'direct',
     },
   ])) as any[]
@@ -539,7 +539,7 @@ async function main() {
         },
       ],
       cena: rsd(poloJed * 100),
-      status: 'u_stampi',
+      status: 'u stampi',
       izvor: 'auction',
     },
   ])) as any[]

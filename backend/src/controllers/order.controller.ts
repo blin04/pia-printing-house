@@ -35,4 +35,28 @@ export class OrderController {
     OrderModel.updateOne({_id: orderId}, {status: "primljeno"})
     res.sendStatus(200)
   }
+
+  // GET /orders/byPrinter/:id
+  byPrinter = async (req: express.Request, res: express.Response) => {
+    const printerId = req.params.id
+    const orders = await OrderModel.find({stampar: printerId, status: {$in: ['naruceno', 'u stampi', 'isporuceno']}})
+    res.json(orders)
+  }
+
+  // POST /orders/advanceStatus
+  advanceStatus = async (req: express.Request, res: express.Response) => {
+    const orderId = req.body.orderId
+
+    const order = await OrderModel.findOne({_id : orderId})
+    if (!order) return res.status(404).json({ message: "nepostojeća narudžbina" })
+
+    if (order.status === 'naruceno') {
+      await OrderModel.updateOne({_id : orderId}, {status: 'u stampi'})
+    }
+    else if (order.status === 'u stampi') {
+      await OrderModel.updateOne({_id : orderId}, {status: 'isporuceno'})
+    }
+    res.sendStatus(200)
+  }
+
 }

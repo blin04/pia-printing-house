@@ -1,5 +1,5 @@
 <header>
-  <h1>Printing House</h1>
+  <h1>Štamparija</h1>
 </header>
 
 <h2>Dobrodošli, {{ user.ime }} {{ user.prezime }}</h2>
@@ -9,6 +9,7 @@
   <button (click)="setView('profile')">Profil</button> <br />
   <button (click)="setView('products')">Proizvodi i usluge</button> <br />
   <button (click)="setView('stock')">Ažuriranje zaliha</button> <br />
+  <button (click)="setView('orders')">Naručeni proizvodi</button> <br />
 </nav>
 
 <br />
@@ -26,8 +27,11 @@
   @case ('stock') {
     <app-printer-stock />
   }
+  @case ('orders') {
+    <app-ordered-products />
+  }
 }
 
 <footer>
-  <p>© 2026 Printing House</p>
+  <p>2026 </p>
 </footer>

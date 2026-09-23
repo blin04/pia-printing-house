@@ -15,7 +15,6 @@ export class ProfileComponent implements OnInit {
   user: User = new User();
   profilePicture: File | null = null;
 
-  // The client's orders shown in the table below the personal data.
   orders: Order[] = [];
   // Orders table is client-only; printers/admin just see the personal data.
   showOrders = false;

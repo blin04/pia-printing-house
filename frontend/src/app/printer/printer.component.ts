@@ -4,10 +4,16 @@ import { User } from '../models/user';
 import { ProfileComponent } from '../profile/profile.component';
 import { PrinterProductsComponent } from '../printer-products/printer-products.component';
 import { PrinterStockComponent } from '../printer-stock/printer-stock.component';
+import { OrderedProductsComponent } from '../ordered-products/ordered-products.component';
 
 @Component({
   selector: 'app-printer',
-  imports: [ProfileComponent, PrinterProductsComponent, PrinterStockComponent],
+  imports: [
+    ProfileComponent,
+    PrinterProductsComponent,
+    PrinterStockComponent,
+    OrderedProductsComponent,
+  ],
   templateUrl: './printer.component.html',
   styleUrl: './printer.component.css',
 })

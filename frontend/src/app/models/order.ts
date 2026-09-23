@@ -17,6 +17,6 @@ export class Order {
   grad: string = '';       // printer city (supplied by the controller)
   proizvodi: OrderItem[] = [];
   cena: number = 0;
-  status: string = '';     // naruceno | placeno | u_stampi | isporuceno | primljeno
+  status: string = '';     // naruceno | placeno | u stampi | isporuceno | primljeno
   createdAt: string = '';  // order date (from timestamps)
 }

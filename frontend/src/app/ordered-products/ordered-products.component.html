@@ -1,0 +1,34 @@
+<h3>Naručeni proizvodi</h3>
+
+@if (orders.length === 0) {
+  <p>Nema naručenih proizvoda.</p>
+} @else {
+  <table border="1">
+    <tr>
+      <th>ID fakture</th>
+      <th>Proizvodi</th>
+      <th>Ukupno (RSD)</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+    @for (o of orders; track o._id) {
+      <tr>
+        <td>{{ o._id }}</td>
+        <td>
+          @for (p of o.proizvodi; track $index) {
+            {{ $index + 1 }}. {{ p.naziv }} ({{ p.kolicina }})<br />
+          }
+        </td>
+        <td>{{ o.cena }}</td>
+        <td>{{ o.status }}</td>
+        <td>
+          @if (o.status === 'naruceno') {
+            <button (click)="handle(o)">Obradi</button>
+          } @else if (o.status === 'u stampi') {
+            <button (click)="handle(o)">Pošalji</button>
+          }
+        </td>
+      </tr>
+    }
+  </table>
+}

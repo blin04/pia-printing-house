@@ -3,7 +3,7 @@ import mongoose, { Schema, Types, InferSchemaType } from 'mongoose'
 export const ORDER_STATUSES = [
   'naruceno',
   'placeno',
-  'u_stampi',
+  'u stampi',
   'isporuceno',
   'primljeno',
 ] as const
