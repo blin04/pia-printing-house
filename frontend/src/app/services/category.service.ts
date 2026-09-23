@@ -12,4 +12,8 @@ export class CategoryService {
   getInStock() {
     return this.http.get<Category[]>(`${this.uri}/inStock`);
   }
+
+  getAll() {
+    return this.http.get<Category[]>(`${this.uri}/all`);
+  }
 }

@@ -1,1 +1,33 @@
-<p>printer works!</p>
+<header>
+  <h1>Printing House</h1>
+</header>
+
+<h2>Dobrodošli, {{ user.ime }} {{ user.prezime }}</h2>
+<p>Prijavljeni ste kao štampar ({{ user.institucija?.naziv }}).</p>
+
+<nav>
+  <button (click)="setView('profile')">Profil</button> <br />
+  <button (click)="setView('products')">Proizvodi i usluge</button> <br />
+  <button (click)="setView('stock')">Ažuriranje zaliha</button> <br />
+</nav>
+
+<br />
+<button (click)="logout()">Izloguj se</button>
+
+<hr />
+
+@switch (view) {
+  @case ('profile') {
+    <app-profile />
+  }
+  @case ('products') {
+    <app-printer-products />
+  }
+  @case ('stock') {
+    <app-printer-stock />
+  }
+}
+
+<footer>
+  <p>© 2026 Printing House</p>
+</footer>

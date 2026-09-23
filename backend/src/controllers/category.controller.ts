@@ -16,4 +16,16 @@ export class CategoryController {
       res.status(500).json({ message: 'Server error' })
     }
   }
+
+  // GET /categories/all — every category (+ subcategories), e.g. for the
+  // printer's add-product form.
+  getAll = async (req: express.Request, res: express.Response) => {
+    try {
+      const categories = await CategoryModel.find({})
+      res.json(categories)
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({ message: 'Server error' })
+    }
+  }
 }

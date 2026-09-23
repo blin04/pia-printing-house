@@ -1,13 +1,16 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Product } from '../models/product';
+import { Comment } from '../models/comment';
 import { ProductService } from '../services/product.service';
+import { CommentService } from '../services/comment.service';
 
 @Component({
   selector: 'app-product',
-  imports: [FormsModule],
+  imports: [FormsModule, DatePipe],
   templateUrl: './product.component.html',
   styleUrl: './product.component.css',
 })
@@ -20,11 +23,16 @@ export class ProductComponent implements OnInit {
   boja = 'Bela';
   mapUrl: SafeResourceUrl | null = null;
 
+  // Last 5 comments + the logged-in username (to frame own comments).
+  comments: Comment[] = [];
+  myUsername = '';
+
   uploadsUri = 'http://localhost:4000/uploads';
 
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private productService = inject(ProductService);
+  private commentService = inject(CommentService);
   private sanitizer = inject(DomSanitizer);
 
   ngOnInit(): void {
@@ -32,6 +40,7 @@ export class ProductComponent implements OnInit {
     if (stored) {
       const u = JSON.parse(stored);
       this.isClient = u.tip === 'klijent';
+      this.myUsername = u.username;
     }
 
     const id = this.route.snapshot.paramMap.get('id') ?? '';
@@ -42,6 +51,11 @@ export class ProductComponent implements OnInit {
         if (p.dostupneBoje && p.dostupneBoje.length) this.boja = p.dostupneBoje[0];
         this.buildMap();
       },
+      error: () => {},
+    });
+
+    this.commentService.getByProduct(id).subscribe({
+      next: (c) => (this.comments = c),
       error: () => {},
     });
   }

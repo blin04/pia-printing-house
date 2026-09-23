@@ -1,9 +1,6 @@
 import PDFDocument from 'pdfkit'
 import path from 'path'
 
-// Bundled Unicode font (backend/assets) so Serbian diacritics (č, ć, đ, š, ž)
-// render correctly on any machine. Resolved relative to the compiled location
-// (dist/utils -> backend).
 const FONT_PATH = path.resolve(__dirname, '..', '..', 'assets', 'DejaVuSans.ttf')
 
 // Renders a single invoice (order) to a PDF and resolves with its bytes.

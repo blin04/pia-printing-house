@@ -17,6 +17,8 @@ export class ProfileComponent implements OnInit {
 
   // The client's orders shown in the table below the personal data.
   orders: Order[] = [];
+  // Orders table is client-only; printers/admin just see the personal data.
+  showOrders = false;
 
   error = '';
   success = '';
@@ -31,12 +33,14 @@ export class ProfileComponent implements OnInit {
     const stored = localStorage.getItem('user');
     if (stored) this.user = JSON.parse(stored);
 
+    this.showOrders = this.user.tip === 'klijent';
+
     if (this.user._id) {
       this.userService.getProfile(this.user._id).subscribe({
         next: (u) => (this.user = u),
         error: () => {},
       });
-      this.loadOrders();
+      if (this.showOrders) this.loadOrders();
     }
   }
 

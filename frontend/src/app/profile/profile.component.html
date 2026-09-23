@@ -32,40 +32,42 @@ Nova profilna slika:
 @if (error) { <p style="color: red">{{ error }}</p> }
 @if (success) { <p style="color: green">{{ success }}</p> }
 
-<h3>Moje narudžbine</h3>
+@if (showOrders) {
+  <h3>Moje narudžbine</h3>
 
-@if (orders.length === 0) {
-  <p>Nemate narudžbina.</p>
-} @else {
-  <table border="1">
-    <tr>
-      <th>ID fakture</th>
-      <th>Štamparija</th>
-      <th>Grad</th>
-      <th>Proizvodi</th>
-      <th>Ukupno (RSD)</th>
-      <th>Status</th>
-      <th></th>
-    </tr>
-    @for (o of orders; track o._id) {
+  @if (orders.length === 0) {
+    <p>Nemate narudžbina.</p>
+  } @else {
+    <table border="1">
       <tr>
-        <td>{{ o._id }}</td>
-        <td>{{ o.stamparija }}</td>
-        <td>{{ o.grad }}</td>
-        <td>
-          @for (p of o.proizvodi; track $index) {
-            {{ $index + 1 }}. {{ p.naziv }} ({{ p.kolicina }})<br />
-          }
-        </td>
-        <td>{{ o.cena }}</td>
-        <td>{{ o.status }}</td>
-        <td>
-          @if (o.status === 'naruceno') {
-            <button (click)="cancel(o)">Otkaži</button>
-          }
-        </td>
+        <th>ID fakture</th>
+        <th>Štamparija</th>
+        <th>Grad</th>
+        <th>Proizvodi</th>
+        <th>Ukupno (RSD)</th>
+        <th>Status</th>
+        <th></th>
       </tr>
-    }
-  </table>
+      @for (o of orders; track o._id) {
+        <tr>
+          <td>{{ o._id }}</td>
+          <td>{{ o.stamparija }}</td>
+          <td>{{ o.grad }}</td>
+          <td>
+            @for (p of o.proizvodi; track $index) {
+              {{ $index + 1 }}. {{ p.naziv }} ({{ p.kolicina }})<br />
+            }
+          </td>
+          <td>{{ o.cena }}</td>
+          <td>{{ o.status }}</td>
+          <td>
+            @if (o.status === 'naruceno') {
+              <button (click)="cancel(o)">Otkaži</button>
+            }
+          </td>
+        </tr>
+      }
+    </table>
+  }
 }
 

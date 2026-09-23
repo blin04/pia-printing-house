@@ -17,4 +17,12 @@ export class OrderService {
     const data = { id };
     return this.http.post(`${this.uri}/cancel`, data);
   }
+
+  getArchive(id: string) {
+    return this.http.get<Order[]>(`${this.uri}/archive/${id}`);
+  }
+
+  markReceived(orderId: string) {
+    return this.http.post(`${this.uri}/markReceived`, { orderId });
+  }
 }

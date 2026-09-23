@@ -1,0 +1,26 @@
+<h3>Ažuriranje zaliha</h3>
+
+@if (products.length === 0) {
+  <p>Nemate proizvoda.</p>
+} @else {
+  <table border="1">
+    <tr>
+      <th>Šifra</th>
+      <th>Naziv</th>
+      <th>Kategorija</th>
+      <th>Količina na lageru</th>
+      <th></th>
+    </tr>
+    @for (p of products; track p._id) {
+      <tr>
+        <td>{{ p.sifra }}</td>
+        <td>{{ p.naziv }}</td>
+        <td>{{ p.kategorija?.naziv }}</td>
+        <td><input type="number" min="0" [(ngModel)]="p.kolicinaNaLageru" /></td>
+        <td><button (click)="updateStock(p)">Ažuriraj</button></td>
+      </tr>
+    }
+  </table>
+}
+
+@if (message) { <p style="color: green">{{ message }}</p> }

@@ -1,0 +1,54 @@
+<h3>Dodaj proizvod</h3>
+
+Šifra: <input [(ngModel)]="sifra" /> <br />
+Naziv: <input [(ngModel)]="naziv" /> <br />
+Opis: <input [(ngModel)]="opis" /> <br />
+
+Kategorija:
+<select [(ngModel)]="kategorija">
+  <option value="">-- izaberi --</option>
+  @for (c of categories; track c._id) {
+    <option [value]="c._id">{{ c.naziv }}</option>
+  }
+</select>
+<br />
+
+Potkategorija:
+<select [(ngModel)]="potkategorija">
+  <option value="">-- izaberi --</option>
+  @for (s of subcategories; track s._id) {
+    <option [value]="s.naziv">{{ s.naziv }}</option>
+  }
+</select>
+<br />
+
+Jedinična cena: <input type="number" min="0" [(ngModel)]="jedinicnaCena" /> <br />
+Količina na lageru: <input type="number" min="0" [(ngModel)]="kolicinaNaLageru" /> <br />
+Dostupne boje (odvojene zarezom): <input [(ngModel)]="dostupneBojeText" /> <br />
+
+<br />
+<button (click)="addProduct()">Dodaj proizvod</button>
+@if (productMessage) { <p>{{ productMessage }}</p> }
+
+<hr />
+
+<h3>Dodaj uslugu štampe</h3>
+
+Proizvod:
+<select [(ngModel)]="serviceProductId">
+  <option value="">-- izaberi proizvod --</option>
+  @for (p of products; track p._id) {
+    <option [value]="p._id">{{ p.naziv }} ({{ p.sifra }})</option>
+  }
+</select>
+<br />
+
+ID usluge: <input [(ngModel)]="idUsluge" /> <br />
+Tip štampe: <input [(ngModel)]="tipStampe" /> <br />
+Dodatna cena po komadu: <input type="number" min="0" [(ngModel)]="dodatnaCenaPoKomadu" /> <br />
+Max širina (mm): <input type="number" min="0" [(ngModel)]="maxSirinaMm" /> <br />
+Max visina (mm): <input type="number" min="0" [(ngModel)]="maxVisinaMm" /> <br />
+
+<br />
+<button (click)="addService()">Dodaj uslugu</button>
+@if (serviceMessage) { <p>{{ serviceMessage }}</p> }

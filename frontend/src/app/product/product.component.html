@@ -68,3 +68,20 @@
   <br />
   <button (click)="dalje()">Dalje</button>
 }
+
+<hr />
+<h3>Komentari</h3>
+@if (comments.length === 0) {
+  <p>Nema komentara.</p>
+} @else {
+  @for (c of comments; track c._id) {
+    <div style="padding: 6px; margin: 4px 0"
+         [style.border]="c.autor === myUsername ? '2px solid orange' : '1px solid #ccc'">
+      <b>{{ c.autor }}</b>
+      ({{ c.createdAt | date: 'dd.MM.yyyy.' }})
+      {{ c.reakcija === 'like' ? '👍' : '👎' }}
+      <br />
+      {{ c.komentar }}
+    </div>
+  }
+}

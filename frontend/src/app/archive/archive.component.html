@@ -1,0 +1,40 @@
+<h3>Arhiva</h3>
+
+@if (rows.length === 0) {
+  <p>Nemate isporučene ni primljene proizvode.</p>
+} @else {
+  <table border="1">
+    <tr>
+      <th (click)="sortBy('naziv')" style="cursor: pointer">Proizvod{{ arrow('naziv') }}</th>
+      <th (click)="sortBy('kolicina')" style="cursor: pointer">Količina{{ arrow('kolicina') }}</th>
+      <th (click)="sortBy('stamparija')" style="cursor: pointer">Štamparija{{ arrow('stamparija') }}</th>
+      <th (click)="sortBy('grad')" style="cursor: pointer">Grad{{ arrow('grad') }}</th>
+      <th (click)="sortBy('datum')" style="cursor: pointer">Datum{{ arrow('datum') }}</th>
+      <th (click)="sortBy('status')" style="cursor: pointer">Status{{ arrow('status') }}</th>
+      <th></th>
+    </tr>
+    @for (row of rows; track $index) {
+      <tr>
+        <td>{{ row.naziv }}</td>
+        <td>{{ row.kolicina }}</td>
+        <td>{{ row.stamparija }}</td>
+        <td>{{ row.grad }}</td>
+        <td>{{ row.datum | date: 'dd.MM.yyyy. HH:mm' }}</td>
+        <td>{{ row.status }}</td>
+        <td>
+          @if (row.status === 'isporuceno') {
+            <button (click)="markReceived(row)">Primljeno</button>
+          } @else if (row.status === 'primljeno') {
+            <select [(ngModel)]="row.reakcija">
+              <option value="like">Sviđa mi se</option>
+              <option value="dislike">Ne sviđa mi se</option>
+            </select>
+            <input [(ngModel)]="row.komentar" placeholder="Komentar" />
+            <button (click)="comment(row)">Pošalji</button>
+            @if (row.message) { <span style="color: green">{{ row.message }}</span> }
+          }
+        </td>
+      </tr>
+    }
+  </table>
+}

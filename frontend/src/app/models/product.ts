@@ -13,6 +13,7 @@ export class PrintService {
 // `stampar` is the populated printer ({ institucija: { naziv, grad, lokacija } }).
 export class Product {
   _id: string = '';
+  sifra: string = '';
   naziv: string = '';
   opis: string = '';
   kategorija: Category = new Category();

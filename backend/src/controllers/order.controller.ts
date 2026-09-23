@@ -10,8 +10,26 @@ export class OrderController {
   }
 
   // POST /orders/cancel
-  // Cancels an order that is still in status 'naruceno'.
   cancel = async (req: express.Request, res: express.Response) => {
     res.status(501).json({ message: 'Not implemented' })
+  }
+
+  // GET /orders/archive/:id
+  getArchive = async (req: express.Request, res: express.Response) => {
+    const userId = req.params.id
+
+    const orders = await OrderModel.find({
+      klijent: userId, 
+      status: {$in: ['naruceno', 'primljeno']}
+    })
+
+    res.json(orders)
+  }
+
+  // POST /orders/markReceived
+  markReceived = async (req: express.Request, res: express.Response) => {
+    const orderId = req.body.orderId
+    OrderModel.updateOne({_id: orderId}, {status: "primljeno"})
+    res.sendStatus(200)
   }
 }

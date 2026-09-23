@@ -93,8 +93,6 @@ export class CartController {
   }
 
   // POST /cart/checkout
-  // Forms one invoice (order) per printer with status "naruceno" (payment is
-  // skipped for now), empties the cart, then emails each invoice as a PDF.
   checkout = async (req: express.Request, res: express.Response) => {
     try {
       const { id } = req.body
@@ -112,7 +110,7 @@ export class CartController {
         groups.get(printerId)!.push(item)
       }
 
-      // One invoice (order) per printer.
+      // generate orders
       const orders = []
       for (const items of groups.values()) {
         const printer = items[0].stamparija
@@ -148,12 +146,10 @@ export class CartController {
         orders.push(order)
       }
 
-      // Empty the cart now that the orders are formed.
       user.set('korpa', [])
       await user.save()
 
-      // Generate a PDF per invoice and email it to the client (best-effort:
-      // a mail failure must not undo the orders that were already created).
+      // generate a PDF per invoice and email it to the client
       for (const order of orders) {
         try {
           const pdf = await generateInvoicePdf(order)

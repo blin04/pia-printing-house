@@ -18,4 +18,5 @@ export class Order {
   proizvodi: OrderItem[] = [];
   cena: number = 0;
   status: string = '';     // naruceno | placeno | u_stampi | isporuceno | primljeno
+  createdAt: string = '';  // order date (from timestamps)
 }

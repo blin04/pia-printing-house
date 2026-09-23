@@ -4,10 +4,11 @@ import { User } from '../models/user';
 import { ProfileComponent } from '../profile/profile.component';
 import { SearchComponent } from '../search/search.component';
 import { CartComponent } from '../cart/cart.component';
+import { ArchiveComponent } from '../archive/archive.component';
 
 @Component({
   selector: 'app-client',
-  imports: [ProfileComponent, SearchComponent, CartComponent],
+  imports: [ProfileComponent, SearchComponent, CartComponent, ArchiveComponent],
   templateUrl: './client.component.html',
   styleUrl: './client.component.css',
 })

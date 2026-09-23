@@ -20,4 +20,20 @@ export class ProductService {
   details(id: string) {
     return this.http.get<Product>(`${this.uri}/details/${id}`);
   }
+
+  getByPrinter(printerId: string) {
+    return this.http.get<Product[]>(`${this.uri}/byPrinter/${printerId}`);
+  }
+
+  add(data: any) {
+    return this.http.post<Product>(`${this.uri}/add`, data);
+  }
+
+  updateStock(id: string, kolicinaNaLageru: number) {
+    return this.http.post(`${this.uri}/updateStock`, { id, kolicinaNaLageru });
+  }
+
+  addService(id: string, usluga: any) {
+    return this.http.post(`${this.uri}/addService`, { id, usluga });
+  }
 }

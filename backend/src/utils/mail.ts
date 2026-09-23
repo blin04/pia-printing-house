@@ -1,9 +1,6 @@
 import nodemailer, { Transporter } from 'nodemailer'
 import { env } from '../config/env'
 
-// Created lazily and reused. If SMTP is configured in .env we use it; otherwise
-// we fall back to an Ethereal test inbox (no real credentials needed) and log a
-// preview URL so the emails can be inspected during development.
 let transporterPromise: Promise<Transporter> | null = null
 
 function getTransporter(): Promise<Transporter> {
