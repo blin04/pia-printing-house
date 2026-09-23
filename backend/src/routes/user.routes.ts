@@ -14,6 +14,7 @@ userRouter
   .post(upload.single('profilna'), (req, res) => new UserController().updateProfile(req, res))
 userRouter.route('/adminLogin').post((req, res) => new UserController().adminLogin(req, res))
 userRouter.route('/pending').get((req, res) => new UserController().getPending(req, res))
+userRouter.route('/printerCount').get((req, res) => new UserController().getPrinterCount(req, res))
 userRouter.route('/approve').post((req, res) => new UserController().approve(req, res))
 userRouter.route('/reject').post((req, res) => new UserController().reject(req, res))
 userRouter.route('/all').get((req, res) => new UserController().getAll(req, res))

@@ -75,11 +75,15 @@ export class CartController {
   remove = async (req: express.Request, res: express.Response) => {
     const { id, itemId } = req.body
     const user = await UserModel.findOne({ _id: id })
-    if (!user) return res.status(404).json({ message: 'User not found' })
+    if (!user) {
+      console.log('kurac')
+      return res.status(404).json({ message: 'User not found' })
+    }
 
     user.korpa.pull(itemId)
     await user.save()
     res.sendStatus(200)
+    console.log("everything ok on back")
   }
 
   // POST /cart/clear

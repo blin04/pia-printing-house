@@ -194,14 +194,13 @@ export class UserController {
       const user = await UserModel.findById(id)
       if (!user) return res.status(404).json({ message: 'User not found' })
 
-      // Email stays unique across users.
+      // unique email 
       const lowerEmail = email.toLowerCase()
       if (lowerEmail !== user.email) {
         if (await UserModel.findOne({ email: lowerEmail, _id: { $ne: user._id } }))
           return res.status(400).json({ message: 'Email already registered' })
       }
 
-      // Optional new profile image (same rules as registration).
       const file: any = (req as any).file
       if (file) {
         let dim
@@ -231,7 +230,7 @@ export class UserController {
           try {
             fs.unlinkSync(path.join(UPLOADS_DIR, user.profilna))
           } catch {
-            /* ignore if it is already gone */
+            // ignore
           }
         }
         user.profilna = filename
@@ -241,7 +240,6 @@ export class UserController {
       user.prezime = prezime
       user.telefon = telefon
       user.email = lowerEmail
-      // Institution: only the descriptive fields are editable (identifiers stay fixed).
       if (institucija && user.institucija) {
         if (institucija.naziv) user.institucija.naziv = institucija.naziv
         if (institucija.adresaSedista) user.institucija.adresaSedista = institucija.adresaSedista
@@ -279,7 +277,7 @@ export class UserController {
     }
   }
 
-  // GET /users/pending — unapproved registration requests.
+  // GET /users/pending
   getPending = async (req: express.Request, res: express.Response) => {
     try {
       const users = await UserModel.find({ status: 'neodobren' })
@@ -291,7 +289,18 @@ export class UserController {
     }
   }
 
-  // POST /users/approve  { id }
+  // GET /users/printerCount
+  getPrinterCount = async (req: express.Request, res: express.Response) => {
+    try {
+      const count = await UserModel.countDocuments({ tip: 'stampar', status: 'odobren' })
+      return res.json({ count })
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json({ message: 'Server error' })
+    }
+  }
+
+  // POST /users/approve
   approve = async (req: express.Request, res: express.Response) => {
     try {
       await UserModel.updateOne(
@@ -308,7 +317,7 @@ export class UserController {
     }
   }
 
-  // POST /users/reject  { id }
+  // POST /users/reject
   reject = async (req: express.Request, res: express.Response) => {
     try {
       await UserModel.updateOne(
@@ -325,7 +334,7 @@ export class UserController {
     }
   }
 
-  // GET /users/all — every user (management table).
+  // GET /users/all
   getAll = async (req: express.Request, res: express.Response) => {
     try {
       const users = await UserModel.find({}).select('-passwordHash')
