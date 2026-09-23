@@ -45,10 +45,9 @@ export class ProfileComponent implements OnInit {
   }
 
   loadOrders(): void {
-    console.log('trying to load orders')
     this.orderService.getByClient(this.user._id).subscribe({
-      next: (orders) => { this.orders = orders; console.log('orders loaded'); },
-      error: () => {console.log('kita')},
+      next: (orders) => this.orders = orders,
+      error: () => {},
     });
   }
 

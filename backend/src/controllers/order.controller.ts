@@ -11,7 +11,10 @@ export class OrderController {
 
   // POST /orders/cancel
   cancel = async (req: express.Request, res: express.Response) => {
-    res.status(501).json({ message: 'Not implemented' })
+    let id = req.body.id
+    const order = await OrderModel.findOneAndDelete({_id: id})
+    if (!order) return res.status(404).json({message: "nepostojeća ponuda"})
+    else return res.sendStatus(200)
   }
 
   // GET /orders/archive/:id
